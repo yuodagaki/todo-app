@@ -13,4 +13,9 @@ class Todo extends Model
         'content',
         'status_id',
     ];
+
+    public function status()
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
+    }
 }
