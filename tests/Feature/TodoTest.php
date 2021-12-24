@@ -20,4 +20,19 @@ class TodoTest extends TestCase
             ->assertStatus(200)
             ->assertExactJsonPartially($expected);
     }
+
+    public function testTODO登録()
+    {
+        $response = $this->post('/api/todos', [
+            'content' => 'テストTODO',
+        ]);
+
+        $expected = [
+            'data' => $this->isType('array'),
+        ];
+
+        $response
+            ->assertStatus(201)
+            ->assertExactJsonPartially($expected);
+    }
 }

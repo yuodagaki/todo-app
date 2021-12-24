@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Todo\IndexRequest;
+use App\Http\Requests\Todo\StoreRequest;
 use App\Http\Resources\TodoResource;
+use App\Models\Status;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 
@@ -12,7 +14,8 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param IndexRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index(IndexRequest $request)
     {
@@ -34,12 +37,23 @@ class TodoController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $values = $request->only('content');
+
+        if ($request->get('statusId', null)) {
+            $values['status_id'] = $request->get('statusId');
+        } else {
+            $defaultStatus = Status::where('name', 'doing')->first();
+            $values['status_id'] = $defaultStatus->id;
+        }
+
+        $todo = Todo::create($values);
+
+        return new TodoResource($todo);
     }
 
     /**
