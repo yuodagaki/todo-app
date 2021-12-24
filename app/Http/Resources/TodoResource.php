@@ -16,7 +16,7 @@ class TodoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'content' => $this->content,
             'status' => new StatusResource($this->status),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
