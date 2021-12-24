@@ -18,4 +18,11 @@ class Todo extends Model
     {
         return $this->hasOne(Status::class, 'id', 'status_id');
     }
+
+    public function scopeSearch($query, $keyword = '')
+    {
+        if (is_null($keyword)) return $query;
+
+        return $query->where('content', 'like', "%$keyword%");
+    }
 }
