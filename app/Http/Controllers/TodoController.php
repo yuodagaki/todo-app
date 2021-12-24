@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Todo\IndexRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ class TodoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(IndexRequest $request)
     {
-        $todos = Todo::all();
+        $todos = Todo::search($request->get('keyword', null))->get();
 
         return TodoResource::collection($todos);
     }
